@@ -25,6 +25,12 @@ const getByIdHandler = async (req, res) => {
 
 const postHandler = async (req, res) => {
   try {
+    const { role } = req.user
+    console.log(req.user)
+    console.log(role)
+    if (role != 'admin') {
+      throw new Error('unauthorized user!')
+    }
     const postJob = new Job({
       title: req.body.title,
       company: req.body.company,

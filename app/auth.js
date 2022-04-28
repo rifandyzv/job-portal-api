@@ -2,23 +2,29 @@ const User = require('../models/users')
 const jwt = require('jsonwebtoken')
 const { expressjwt } = require('express-jwt')
 const bcrypt = require('bcrypt')
+const validRoles = ['user', 'admin']
 
 const signUp = async (req, res) => {
   try {
     const username = req.body.username
     const password = req.body.password
-    console.log('asdasd')
+    const role = req.body.role
+
     if (username && password) {
       const availableUser = await User.findOne({ username: username })
       if (availableUser) {
         throw new Error('Username unavailable')
+      }
+      if (!validRoles.includes(role)) {
+        throw new Error('Invalid role!')
       }
 
       encrpytedPassword = await bcrypt.hash(password, 10)
 
       const newUser = new User({
         username: username,
-        password: encrpytedPassword
+        password: encrpytedPassword,
+        role: role
       })
 
       const savedUser = await newUser.save()
@@ -47,7 +53,8 @@ const signIn = async (req, res) => {
     if (checkPassword) {
       const token = jwt.sign(
         {
-          username: user.username
+          username: user.username,
+          role: user.role
         },
         process.env.JWT_SECRET,
         {
@@ -64,9 +71,28 @@ const signIn = async (req, res) => {
   }
 }
 
-const verifyJWT = expressjwt({
-  secret: process.env.JWT_SECRET,
-  userProerty: 'auth',
-  algorithms: ['HS256']
-})
+// const verifyJWT = expressjwt({
+//   secret: process.env.JWT_SECRET,
+//   userProperty: 'auth',
+//   algorithms: ['HS256']
+// })
+
+const verifyJWT = async (req, res, next) => {
+  const authHeader = req.headers.authorization
+
+  if (authHeader) {
+    const token = authHeader.split(' ')[1]
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.status(403).json({ message: 'invalid credentials!' })
+      }
+      req.user = user
+      next()
+    })
+  } else {
+    res.status(401)
+  }
+}
+
 module.exports = { signUp, signIn, verifyJWT }

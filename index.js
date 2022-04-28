@@ -4,7 +4,7 @@ const app = express()
 const mongoose = require('mongoose')
 const router = require('./app/router')
 const authRouter = require('./app/authRouter')
-const initRoles = require('./app/initRoles')
+
 app.use(express.json())
 app.use(
   express.urlencoded({
@@ -12,7 +12,6 @@ app.use(
   })
 )
 const port = 3000 || process.env.PORT
-console.log(process.env.MONGO_URI)
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -21,7 +20,6 @@ mongoose
   })
   .then(() => {
     console.log('connected to mongodb')
-    initRoles()
   })
 
 app.listen(port, () => {

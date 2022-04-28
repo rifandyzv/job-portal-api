@@ -9,12 +9,12 @@ const {
 } = require('./handler')
 const { verifyJWT } = require('./auth')
 
-router.get('/', getAllHandler)
-router.get('/all', verifyJWT, (req, res) => {
-  res.send('asdasd')
-})
-router.get('/:id', getByIdHandler)
-router.post('/', postHandler)
-router.put('/:id', putHandler)
-router.delete('/:id', deleteHandler)
+router.get('/', verifyJWT, getAllHandler)
+// router.get('/all', verifyJWT, (req, res) => {
+//   res.status(200).json({ yourname: req.user })
+// })
+router.get('/:id', verifyJWT, getByIdHandler)
+router.post('/', verifyJWT, postHandler)
+router.put('/:id', verifyJWT, putHandler)
+router.delete('/:id', verifyJWT, deleteHandler)
 module.exports = router
