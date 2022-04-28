@@ -1,5 +1,5 @@
 const express = require('express')
-const Job = require('./jobs')
+const Job = require('../models/jobs')
 
 const getAllHandler = async (req, res) => {
   try {
