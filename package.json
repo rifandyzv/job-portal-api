@@ -1,0 +1,23 @@
+{
+  "name": "job-portal-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rifandyzv/job-portal-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rifandyzv/job-portal-api/issues"
+  },
+  "homepage": "https://github.com/rifandyzv/job-portal-api#readme",
+  "dependencies": {
+    "express": "^4.18.0",
+    "mongoose": "^6.3.1"
+  }
+}
