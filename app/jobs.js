@@ -2,11 +2,6 @@ const mongoose = require('mongoose')
 
 const jobSchema = new mongoose.Schema(
   {
-    _id: {
-      type: String,
-      required: true,
-      unique: true
-    },
     title: {
       type: String,
       required: true
@@ -25,15 +20,13 @@ const jobSchema = new mongoose.Schema(
     },
     salary: Number,
     description: String,
-    postedAt: Date,
-    updatedAt: Date,
     isActive: {
       type: Boolean,
       required: true
     }
   },
-  { versionKey: false }
+  { timestamps: { createdAt: 'createdAt' }, versionKey: false }
 )
 
-const jobModel = mongoose.model('Job', jobSchema, 'jobs')
+const jobModel = mongoose.model('job', jobSchema, 'jobs')
 module.exports = jobModel
